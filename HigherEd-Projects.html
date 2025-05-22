@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Higher Ed Projects</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <style>
+    #mapid { height: 100vh; }
+  </style>
+</head>
+<body>
+<div id="mapid"></div>
+<script>
+  var map = L.map('mapid').setView([42.9, -75.0], 7);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://carto.com/attributions">CARTO</a> &copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+L.marker([42.9317, -76.5661]).addTo(map).bindPopup(`<b>Cayuga Community College</b><ul><li><b>CCC - Police Academy Renovation</b><br>Academic Building</li></ul>`);
+L.marker([44.6592, -74.9982]).addTo(map).bindPopup(`<b>Clarkson University</b><ul><li><b>Clarkson Univ Cheel Ctr Locker Rm Renov</b><br>Recreational Facility/Gymnasium</li></ul>`);
+L.marker([42.817, -75.5385]).addTo(map).bindPopup(`<b>Colgate University</b><ul><li><b>Colgate Buildings and Grounds Relocation</b><br>Maintenance Building</li><li><b>Colgate-Frank Dining Hall Renovations</b><br>Dining Facility</li></ul>`);
+L.marker([42.4534, -76.4735]).addTo(map).bindPopup(`<b>Cornell University</b><ul><li><b>FP Design Off-Campus Housing</b><br>Housing, Residence Hall</li><li><b>Arch/Eng JOC Program 2012</b><br>Academic Building</li><li><b>Restrm Ren Kimball Halls*</b><br>Academic Building</li></ul>`);
+L.marker([43.2130, -77.9500]).addTo(map).bindPopup(
+  `<b>SUNY Brockport</b><ul>
+    <li><b>Residence Hall</b><br>Housing, Residence Hall</li>
+  </ul>`
+);
+L.marker([44.0007, -75.9223]).addTo(map).bindPopup(
+  `<b>Jefferson Community College</b><ul>
+    <li><b>Student Housing</b><br>Housing, Residence Hall</li>
+  </ul>`
+);
+L.marker([44.5913, -75.1626]).addTo(map).bindPopup(
+  `<b>SUNY Canton</b><ul>
+    <li><b>Dana Hall Site Upgrades</b><br>Housing, Residence Hall</li>
+  </ul>`
+);
+
+L.marker([43.0373, -76.1351]).addTo(map).bindPopup(`<b>SUNY College of Environmental Science & Forestry</b><ul><li><b>SUNY ESF-Bray Hall 4th Fl. Renovation</b><br>Academic Building</li><li><b>SUNY ESF-Post-Chlorination System Rehab</b><br>Maintenance Building</li></ul>`);
+L.marker([44.2224, -74.8919]).addTo(map).bindPopup(`<b>SUNY Wanakena Campus Ranger Station</b><ul><li><b>SUNY ESF-Wanakena Ranger Station Rehab</b><br>nan</li></ul>`);
+L.marker([44.5902, -75.1642]).addTo(map).bindPopup(
+  `<b>St. Lawrence University</b><ul>
+    <li><b>Facility Assessment</b><br>Academic Building</li>
+    <li><b>Theta Beta Pi Temple Restoration</b><br>Academic Building</li>
+    <li><b>Java Project*</b><br>Restaurants</li>
+    <li><b>Herring Meeting/Briefing Room</b><br>Administrative/Office Building</li>
+  </ul>`
+);
+L.marker([42.6864, -73.8238]).addTo(map).bindPopup(`<b>State University of New York at Albany</b><ul><li><b>SUNY - Albany Chemistry 137 Renovation</b><br>Academic Building</li></ul>`);
+L.marker([42.6012, -76.1805]).addTo(map).bindPopup(`<b>State University of New York at Cortland</b><ul><li><b>SUNY Cortland Hendrick Hall Toilet Rm</b><br>Housing, Residence Hall</li><li><b>SUNY Cortland - Bowers Hall Renovation</b><br>Academic Building</li></ul>`);
+L.marker([42.457, -75.0638]).addTo(map).bindPopup(`<b>State University of New York at Oneonta</b><ul><li><b>SUNY Oneonta Lee Hall Retn. Wall & Stair</b><br>Academic Building</li></ul>`);
+L.marker([43.0386, -76.134]).addTo(map).bindPopup(`<b>Syracuse University</b><ul><li><b>Syracuse University - Hawkins Warehouse</b><br>Warehouse/Storage Building</li></ul>`);
+L.marker([42.5287, -76.3406]).addTo(map).bindPopup(`<b>Tompkins Cortland Community College</b><ul><li><b>TCCC Classroom Additions - Alterations*</b><br>Academic Building</li><li><b>TCCC - Electrical System*</b><br>Academic Building</li><li><b>TCCC Cafe Kitchen Area Renovations*</b><br>Dining Facility</li></ul>`);
+L.marker([43.1293, -77.6283]).addTo(map).bindPopup(`<b>University of Rochester</b><ul><li><b>U of R-Anderson Hall Renovation CA*</b><br>Housing, Residence Hall</li></ul>`);
+L.marker([42.7463, -76.6961]).addTo(map).bindPopup(`<b>Wells College</b><ul><li><b>Wells College - Schwartz Union/Ath Fac r</b><br>Recreational Facility/Gymnasium</li><li><b>Wells College Athletic Wing Renovation</b><br>Recreational Facility/Gymnasium</li></ul>`);
+</script>
+</body>
+</html>
