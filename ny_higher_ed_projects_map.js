@@ -1,5 +1,3 @@
-// JavaScript for Higher Ed Projects Map
-
 var map = L.map('mapid').setView([42.9, -75.0], 7);
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
   attribution: '&copy; <a href="https://carto.com/attributions">CARTO</a> &copy; OpenStreetMap contributors'
@@ -16,7 +14,7 @@ var maroonIcon = L.icon({
 
 function createPopupList(items, markerIdx) {
   return '<ul>' + items.map(function(item, i) {
-    return `<li class="carousel-trigger" data-marker="${markerIdx}" data-imgidx="${i}" style="cursor:pointer;text-decoration:underline;color:#800000;">` +
+    return `<li class="carousel-trigger text-black hover:text-red-700 focus:text-red-700 cursor-pointer" data-marker="${markerIdx}" data-imgidx="${i}">` +
       `<b>${item.title}</b><br>${item.type}</li>`;
   }).join('') + '</ul>';
 }
@@ -35,7 +33,8 @@ var markerProjects = [
   ],
   [{ title: "Brockport Residence Hall", type: "Housing, Residence Hall" }],
   [{ title: "Student Housing Facility", type: "Housing, Residence Hall" }],
-  [{ title: "Dana Hall Site Upgrades", type: "Housing, Residence Hall" }],  [
+  [{ title: "Dana Hall Site Upgrades", type: "Housing, Residence Hall" }],
+  [
     { title: "Bray Hall Renovation", type: "Academic Building" },
     { title: "Post-Chlorination Facility Upgrade", type: "Maintenance Building" }
   ],
@@ -132,6 +131,17 @@ function prevImg() {
   showCarousel(currentMarker, currentImgIdx);
 }
 
+function setActivePopupListItem(popup, imgIdx) {
+  var triggers = popup.getElement().querySelectorAll('.carousel-trigger');
+  triggers.forEach(function(li, idx) {
+    if (idx === imgIdx) {
+      li.classList.add('text-red-700');
+    } else {
+      li.classList.remove('text-red-700');
+    }
+  });
+}
+
 document.getElementById('carouselCloseBtn').onclick = hideCarousel;
 document.getElementById('carouselNextBtn').onclick = nextImg;
 document.getElementById('carouselPrevBtn').onclick = prevImg;
@@ -147,6 +157,7 @@ map.on('popupopen', function(e) {
       li.onclick = function(ev) {
         var markerIdx = parseInt(li.getAttribute('data-marker'));
         var imgIdx = parseInt(li.getAttribute('data-imgidx'));
+        setActivePopupListItem(popup, imgIdx);
         showCarousel(markerIdx, imgIdx);
       };
     });
