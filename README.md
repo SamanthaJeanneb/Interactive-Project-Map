@@ -32,7 +32,7 @@ A live demo is available via the [Higher Education Map](https://higher-education
 ## Figma Design Reference
 
 The full page layout and design, including how this map integrates with the rest of the page, is available in the project Figma file:  
-[Figma Wireframe](https://www.figma.com/design/iBLcR2X3k2xZGvWqda7wOv/Beardsley-Higher-Education-Landing-Page?node-id=0-1&t=BHggto1WrifY1WbC-1)
+[Figma Wireframe](https://www.figma.com/design/iBLcR2X3k2xZGvWqda7wOv/Beardsley-Higher-Education-Landing-Page?node-id=0-1&t=BHggto1WrifY1WbC-1](https://www.figma.com/proto/iBLcR2X3k2xZGvWqda7wOv/Beardsley-Higher-Education-Landing-Page?node-id=1-522&t=BHggto1WrifY1WbC-0&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A522)
 
 ## Getting Started
 
