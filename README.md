@@ -27,7 +27,7 @@ A live demo is available via the [Higher Education Map](https://higher-education
 - HTML / CSS / JavaScript
 - [Leaflet.js](https://leafletjs.com/)
 - CARTO light basemap
-- GitHub Pages (optional for deployment)
+- Vercel - deployment 
 
 ## Figma Design Reference
 
