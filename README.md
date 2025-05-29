@@ -20,7 +20,7 @@ This map is currently deployed as a standalone prototype and intended for future
 
 ## Demo
 
-A live demo is available via the *Higher Ed Projects* page (link provided internally).
+A live demo is available via the [Higher Education Map](https://higher-education-map.vercel.app/)
 
 ## Technologies Used
 
