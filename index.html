@@ -9,22 +9,123 @@
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <style>
     #mapid { height: 100vh; }
+    html, body {
+      padding: 0;
+      margin: 0;
+      height: 100vh;
+    }
+    .carousel {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      font-family: Arial;
+      position: static;
+    }
+    .carousel__list {
+      display: flex;
+      list-style: none;
+      position: relative;
+      width: 100%;
+      height: 400px;
+      justify-content: center;
+      perspective: 300px;
+      margin: 0;
+      padding: 0;
+    }
+    .carousel__item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0px;
+      width: 400px;  
+      height: 300px;
+      box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.5);
+      position: absolute;
+      transition: all .3s ease-in;
+      background: #222;
+      overflow: hidden;
+    }
+    .carousel__item img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .carousel__item[data-pos="0"] { z-index: 5; }
+    .carousel__item[data-pos="-1"],
+    .carousel__item[data-pos="1"] {
+      opacity: 0.7;
+      filter: blur(1px) grayscale(10%);
+    }
+    .carousel__item[data-pos="-1"] {
+      transform: translateX(-40%) scale(.9);
+      z-index: 4;
+    }
+    .carousel__item[data-pos="1"] {
+      transform: translateX(40%) scale(.9);
+      z-index: 4;
+    }
+    .carousel__item[data-pos="-2"],
+    .carousel__item[data-pos="2"] {
+      opacity: 0.4;
+      filter: blur(3px) grayscale(20%);
+    }
+    .carousel__item[data-pos="-2"] {
+      transform: translateX(-70%) scale(.8);
+      z-index: 3;
+    }
+    .carousel__item[data-pos="2"] {
+      transform: translateX(70%) scale(.8);
+      z-index: 3;
+    }
+    .carousel__caption {
+      color: #fff;
+      text-align: center;
+      font-size: 1.1rem;
+      width: 400px;
+      min-height: 40px;
+      background: rgba(0, 0, 0, 0.95);
+      padding: 12px 16px;
+      border-radius: 12px;
+      box-sizing: border-box;
+      word-break: break-word;
+      overflow-wrap: break-word;
+      margin-top: 0;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 350px;
+      z-index: 10;
+      pointer-events: none;
+    }
+    .carousel-modal-inner {
+      top:50%;
+      left:50%;
+      transform:translate(-50%,-50%);
+      position:fixed;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
   </style>
   <script src="ny_higher_ed_projects_map.js" defer></script>
 </head>
 <body>
 <div id="mapid" class="absolute inset-0 z-0"></div>
 
-<div id="carouselModal" class="fixed inset-0 z-50 bg-black bg-opacity-60 flex items-center justify-center hidden">
-  <div class="relative bg-white dark:bg-gray-900 rounded-lg max-w-lg w-full max-h-[80vh] flex flex-col items-center p-4 shadow-xl">
-    <button class="absolute top-2 right-2 text-gray-700 dark:text-white text-2xl hover:text-red-400 focus:outline-none" id="carouselCloseBtn" aria-label="Close">&times;</button>
-    <img id="carouselImg" class="w-full max-h-[40vh] object-contain rounded mb-4 bg-gray-200 dark:bg-gray-800" src="placeholder.png" alt="Project Image" />
-    <div class="flex justify-between items-center w-full mb-2 text-gray-800 dark:text-white">
-      <button class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded px-4 py-2 text-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition" id="carouselPrevBtn">&lt;</button>
-      <span id="carouselCounter"></span>
-      <button class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded px-4 py-2 text-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition" id="carouselNextBtn">&gt;</button>
+<div id="carouselModal" class="fixed inset-0 z-50 flex items-center justify-center hidden" style="background:rgba(0,0,0,0.95);">
+  <div class="carousel-modal-inner relative rounded-lg max-w-2xl w-full max-h-[80vh] flex flex-col items-center p-0 shadow-xl bg-transparent"
+       style="top:50%;left:50%;transform:translate(-50%,-50%);position:fixed;">
+    <button class="absolute top-2 right-2 text-white text-2xl hover:text-red-400 focus:outline-none z-20" id="carouselCloseBtn" aria-label="Close">&times;</button>
+    <div class="carousel w-full h-[60vh] flex items-center justify-center" style="position:relative;">
+      <ul class="carousel__list">
+        <!-- Slides will be injected by JS -->
+      </ul>
+      <div id="carouselCaption" class="carousel__caption"></div>
     </div>
-    <div id="carouselCaption" class="text-gray-800 dark:text-white text-center text-base mt-2 mb-2 w-full break-words"></div>
   </div>
 </div>
 
