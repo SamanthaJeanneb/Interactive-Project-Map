@@ -106,41 +106,41 @@ var currentMarker = 0, currentProjectIdx = 0, currentImgIdx = 0;
 
 const imageMap = {
   0: ['PoliceAcademy1.jpg', 'PoliceAcademy2.jpg'],
-  1: [], 
+  1: [],
   2: ['Colgate_Bldgs1.jpg', 'ColgateFrankDiningHall1.jpg', 'ColgateFrankDiningHall2.jpg', 'ColgateFrankDiningHall3.jpg'],
-  3: [], 
-  4: [], 
-  5: [], 
-  6: ['CantonDanaHall.jpg'], 
+  3: [],
+  4: [],
+  5: [],
+  6: ['CantonDanaHall.jpg'],
   7: ['ESFWanakenaRanger1.jpg', 'ESFWanakenaRanger2.jpg'],
-  8: ['ESFWanakenaRanger1.jpg'], 
+  8: ['ESFWanakenaRanger1.jpg'],
   9: [],
-  10: [], 
-  11: ['CortlandBowersHall.JPG'], 
-  12: [], 
+  10: [],
+  11: ['CortlandBowersHall.JPG'],
+  12: [],
   13: [],
-  14: ['TCCClassroomAdd.JPG'], 
+  14: ['TCCClassroomAdd.JPG'],
   15: ['AndersonHall1.jpg', 'AndersonHall2.jpg'],
-  16: [] 
+  16: []
 };
 
 const imageProjectMap = {
   0: [0, 0],
-  1: [], 
+  1: [],
   2: [0, 1, 1, 1],
-  3: [], 
-  4: [], 
-  5: [], 
-  6: [0], 
+  3: [],
+  4: [],
+  5: [],
+  6: [0],
   7: [0, 1],
-  8: [0], 
-  9: [], 
-  10: [], 
-  11: [1], 
-  12: [], 
-  13: [], 
-  14: [0], 
-  15: [0, 0], 
+  8: [0],
+  9: [],
+  10: [],
+  11: [1],
+  12: [],
+  13: [],
+  14: [0],
+  15: [0, 0],
   16: []
 };
 
@@ -157,7 +157,7 @@ function createCarouselSlides(markerIdx) {
     li.setAttribute('data-pos', i - 0);
     const projectIdx = projectIndices[i] !== undefined ? projectIndices[i] : 0;
     const imgSrc = img ? `Images/${img}` : 'placeholder.png';
-    li.innerHTML = `<img src="${imgSrc}" alt="${projects[projectIdx]?.title || 'Project Image'}" style="width:400px;height:300px;object-fit:cover;" onerror="this.onerror=null;this.src='placeholder.png';" />`;
+    li.innerHTML = `<img src="${imgSrc}" alt="${projects[projectIdx]?.title || 'Project Image'}" style="width:100%;max-width:400px;aspect-ratio:4/3;height:auto;object-fit:cover;" onerror="this.onerror=null;this.src='placeholder.png';" />`;
     li.onclick = function() { updateCarouselPos(i); };
     carouselList.appendChild(li);
   });
@@ -166,12 +166,62 @@ function createCarouselSlides(markerIdx) {
     const li = document.createElement('li');
     li.className = 'carousel__item';
     li.setAttribute('data-pos', 0);
-    li.innerHTML = `<img src="placeholder.png" alt="No Image" style="width:400px;height:300px;object-fit:cover;" />`;
+    li.innerHTML = `<img src="placeholder.png" alt="No Image" style="width:100%;max-width:400px;aspect-ratio:4/3;height:auto;object-fit:cover;" />`;
     carouselList.appendChild(li);
   }
-  carouselList.dataset.imgToProjectIdx = JSON.stringify(projectIndices);
 
+  carouselList.dataset.imgToProjectIdx = JSON.stringify(projectIndices);
   updateCarouselCaption(markerIdx, projectIndices[0] ?? 0);
+
+  addCarouselSwipeHandlers();
+}
+
+function addCarouselSwipeHandlers() {
+  const carouselList = document.querySelector('#carouselModal .carousel__list');
+  let startX = null;
+  let isTouch = false;
+
+  function onTouchStart(e) {
+    isTouch = true;
+    startX = e.touches ? e.touches[0].clientX : e.clientX;
+  }
+  function onTouchMove(e) {
+    if (!isTouch || startX === null) return;
+    e.preventDefault();
+  }
+  function onTouchEnd(e) {
+    if (!isTouch || startX === null) return;
+    let endX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
+    let diff = endX - startX;
+    if (Math.abs(diff) > 40) {
+      const items = Array.from(carouselList.querySelectorAll('.carousel__item'));
+      let activeIdx = items.findIndex(item => item.getAttribute('data-pos') == 0);
+      if (diff < 0 && activeIdx < items.length - 1) {
+        updateCarouselPos(activeIdx + 1);
+      } else if (diff > 0 && activeIdx > 0) {
+        updateCarouselPos(activeIdx - 1);
+      }
+    }
+    startX = null;
+    isTouch = false;
+  }
+  carouselList.removeEventListener('touchstart', carouselList._touchStart, {passive: false});
+  carouselList.removeEventListener('touchmove', carouselList._touchMove, {passive: false});
+  carouselList.removeEventListener('touchend', carouselList._touchEnd, {passive: false});
+  carouselList.removeEventListener('mousedown', carouselList._touchStart);
+  carouselList.removeEventListener('mousemove', carouselList._touchMove);
+  carouselList.removeEventListener('mouseup', carouselList._touchEnd);
+
+  carouselList._touchStart = onTouchStart;
+  carouselList._touchMove = onTouchMove;
+  carouselList._touchEnd = onTouchEnd;
+
+  carouselList.addEventListener('touchstart', onTouchStart, {passive: false});
+  carouselList.addEventListener('touchmove', onTouchMove, {passive: false});
+  carouselList.addEventListener('touchend', onTouchEnd, {passive: false});
+  carouselList.addEventListener('mousedown', onTouchStart);
+  carouselList.addEventListener('mousemove', onTouchMove);
+  carouselList.addEventListener('mouseup', onTouchEnd);
 }
 
 function updateCarouselPos(activeIdx) {
