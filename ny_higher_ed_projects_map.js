@@ -104,44 +104,47 @@ var carouselModal = document.getElementById('carouselModal');
 var carouselCaption = document.getElementById('carouselCaption');
 var currentMarker = 0, currentProjectIdx = 0, currentImgIdx = 0;
 
+// Add image mapping for each marker index
 const imageMap = {
   0: ['PoliceAcademy1.jpg', 'PoliceAcademy2.jpg'],
-  1: [],
+  1: [], //Locker Room Renovation
   2: ['Colgate_Bldgs1.jpg', 'ColgateFrankDiningHall1.jpg', 'ColgateFrankDiningHall2.jpg', 'ColgateFrankDiningHall3.jpg'],
-  3: [],
-  4: [],
-  5: [],
-  6: ['CantonDanaHall.jpg'],
+  3: [], //Cornell projects
+  4: [], //  Brockport Residence Hall
+  5: [], // No image for Student Housing Facility
+  6: ['CantonDanaHall.jpg'], // Not in screenshot, will fallback to placeholder
   7: ['ESFWanakenaRanger1.jpg', 'ESFWanakenaRanger2.jpg'],
-  8: ['ESFWanakenaRanger1.jpg'],
-  9: [],
-  10: [],
-  11: ['CortlandBowersHall.JPG'],
-  12: [],
-  13: [],
-  14: ['TCCClassroomAdd.JPG'],
+  8: ['ESFWanakenaRanger1.jpg'], // Only one image available
+  9: [], // No images for SLU projects
+  10: [], // No image for Chemistry Lab Renovation
+  11: ['CortlandBowersHall.JPG'], // Only Bowers Hall image available
+  12: [], // No image for Lee Hall
+  13: [], // No image for Hawkins Warehouse
+  14: ['TCCClassroomAdd.JPG'], // Only Classroom Additions image available
   15: ['AndersonHall1.jpg', 'AndersonHall2.jpg'],
-  16: []
+  16: [] // No image for Wells College projects
 };
 
+// When populating images, relate images to their project using a new imageProjectMap
+// imageProjectMap: markerIdx -> array of project indices (same length as images array)
 const imageProjectMap = {
-  0: [0, 0],
-  1: [],
-  2: [0, 1, 1, 1],
-  3: [],
-  4: [],
-  5: [],
-  6: [0],
-  7: [0, 1],
-  8: [0],
-  9: [],
-  10: [],
-  11: [1],
-  12: [],
-  13: [],
-  14: [0],
-  15: [0, 0],
-  16: []
+  0: [0, 0], // Both images for project 0
+  1: [], // No images
+  2: [0, 1, 1, 1], // First image for project 0, rest for project 1
+  3: [], // No images
+  4: [], // No images
+  5: [], // No images
+  6: [0], // One image for project 0
+  7: [0, 1], // First image for project 0, second for project 1
+  8: [0], // One image for project 0
+  9: [], // No images
+  10: [], // No images
+  11: [1], // Only Bowers Hall image (project 1)
+  12: [], // No images
+  13: [], // No images
+  14: [0], // Only Classroom Additions (project 0)
+  15: [0, 0], // Both images for project 0
+  16: [] // No images
 };
 
 function createCarouselSlides(markerIdx) {
@@ -157,7 +160,7 @@ function createCarouselSlides(markerIdx) {
     li.setAttribute('data-pos', i - 0);
     const projectIdx = projectIndices[i] !== undefined ? projectIndices[i] : 0;
     const imgSrc = img ? `Images/${img}` : 'placeholder.png';
-    li.innerHTML = `<img src="${imgSrc}" alt="${projects[projectIdx]?.title || 'Project Image'}" style="width:100%;max-width:400px;aspect-ratio:4/3;height:auto;object-fit:cover;" onerror="this.onerror=null;this.src='placeholder.png';" />`;
+    li.innerHTML = `<img src="${imgSrc}" alt="${projects[projectIdx]?.title || 'Project Image'}" style="width:400px;height:300px;object-fit:cover;" onerror="this.onerror=null;this.src='placeholder.png';" />`;
     li.onclick = function() { updateCarouselPos(i); };
     carouselList.appendChild(li);
   });
@@ -166,62 +169,15 @@ function createCarouselSlides(markerIdx) {
     const li = document.createElement('li');
     li.className = 'carousel__item';
     li.setAttribute('data-pos', 0);
-    li.innerHTML = `<img src="placeholder.png" alt="No Image" style="width:100%;max-width:400px;aspect-ratio:4/3;height:auto;object-fit:cover;" />`;
+    li.innerHTML = `<img src="placeholder.png" alt="No Image" style="width:400px;height:300px;object-fit:cover;" />`;
     carouselList.appendChild(li);
   }
 
+  // Store mapping for use in updateCarouselPos
   carouselList.dataset.imgToProjectIdx = JSON.stringify(projectIndices);
+
+  // Set the correct description for the first image
   updateCarouselCaption(markerIdx, projectIndices[0] ?? 0);
-
-  addCarouselSwipeHandlers();
-}
-
-function addCarouselSwipeHandlers() {
-  const carouselList = document.querySelector('#carouselModal .carousel__list');
-  let startX = null;
-  let isTouch = false;
-
-  function onTouchStart(e) {
-    isTouch = true;
-    startX = e.touches ? e.touches[0].clientX : e.clientX;
-  }
-  function onTouchMove(e) {
-    if (!isTouch || startX === null) return;
-    e.preventDefault();
-  }
-  function onTouchEnd(e) {
-    if (!isTouch || startX === null) return;
-    let endX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
-    let diff = endX - startX;
-    if (Math.abs(diff) > 40) {
-      const items = Array.from(carouselList.querySelectorAll('.carousel__item'));
-      let activeIdx = items.findIndex(item => item.getAttribute('data-pos') == 0);
-      if (diff < 0 && activeIdx < items.length - 1) {
-        updateCarouselPos(activeIdx + 1);
-      } else if (diff > 0 && activeIdx > 0) {
-        updateCarouselPos(activeIdx - 1);
-      }
-    }
-    startX = null;
-    isTouch = false;
-  }
-  carouselList.removeEventListener('touchstart', carouselList._touchStart, {passive: false});
-  carouselList.removeEventListener('touchmove', carouselList._touchMove, {passive: false});
-  carouselList.removeEventListener('touchend', carouselList._touchEnd, {passive: false});
-  carouselList.removeEventListener('mousedown', carouselList._touchStart);
-  carouselList.removeEventListener('mousemove', carouselList._touchMove);
-  carouselList.removeEventListener('mouseup', carouselList._touchEnd);
-
-  carouselList._touchStart = onTouchStart;
-  carouselList._touchMove = onTouchMove;
-  carouselList._touchEnd = onTouchEnd;
-
-  carouselList.addEventListener('touchstart', onTouchStart, {passive: false});
-  carouselList.addEventListener('touchmove', onTouchMove, {passive: false});
-  carouselList.addEventListener('touchend', onTouchEnd, {passive: false});
-  carouselList.addEventListener('mousedown', onTouchStart);
-  carouselList.addEventListener('mousemove', onTouchMove);
-  carouselList.addEventListener('mouseup', onTouchEnd);
 }
 
 function updateCarouselPos(activeIdx) {
@@ -278,6 +234,66 @@ carouselModal.addEventListener('click', function(e) {
   if (e.target === carouselModal) hideCarousel();
 });
 
+function getActiveCarouselIdx() {
+  const items = document.querySelectorAll('.carousel__item');
+  for (let i = 0; i < items.length; i++) {
+    if (items[i].getAttribute('data-pos') == 0) return i;
+  }
+  return 0;
+}
+
+function nextCarousel() {
+  const items = document.querySelectorAll('.carousel__item');
+  if (items.length <= 1) return;
+  let idx = getActiveCarouselIdx();
+  idx = (idx + 1) % items.length;
+  updateCarouselPos(idx);
+}
+function prevCarousel() {
+  const items = document.querySelectorAll('.carousel__item');
+  if (items.length <= 1) return;
+  let idx = getActiveCarouselIdx();
+  idx = (idx - 1 + items.length) % items.length;
+  updateCarouselPos(idx);
+}
+
+// Mouse wheel navigation
+carouselModal.addEventListener('wheel', function(e) {
+  if (carouselModal.classList.contains('hidden')) return;
+  if (e.deltaY > 0) {
+    nextCarousel();
+  } else if (e.deltaY < 0) {
+    prevCarousel();
+  }
+  e.preventDefault();
+}, { passive: false });
+
+// Touch swipe navigation for mobile
+let touchStartX = null;
+carouselModal.addEventListener('touchstart', function(e) {
+  if (e.touches.length === 1) {
+    touchStartX = e.touches[0].clientX;
+  }
+});
+carouselModal.addEventListener('touchend', function(e) {
+  if (touchStartX === null) return;
+  const touchEndX = e.changedTouches[0].clientX;
+  const dx = touchEndX - touchStartX;
+  if (Math.abs(dx) > 40) {
+    if (dx < 0) nextCarousel();
+    else prevCarousel();
+  }
+  touchStartX = null;
+});
+
+// Keyboard navigation (optional)
+carouselModal.addEventListener('keydown', function(e) {
+  if (carouselModal.classList.contains('hidden')) return;
+  if (e.key === 'ArrowLeft') prevCarousel();
+  if (e.key === 'ArrowRight') nextCarousel();
+});
+
+// Popup triggers
 map.on('popupopen', function(e) {
   var popup = e.popup;
   setTimeout(function() {
