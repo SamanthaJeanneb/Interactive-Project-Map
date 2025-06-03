@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script src="ny_higher_ed_projects_map.js" defer></script>
   <style>
     #mapid { height: 100vh; }
     html, body {
@@ -135,18 +137,15 @@
       }
     }
   </style>
-  <script src="ny_higher_ed_projects_map.js" defer></script>
 </head>
 <body>
 <div id="mapid" class="absolute inset-0 z-0"></div>
 
 <div id="carouselModal" class="fixed inset-0 z-50 flex items-center justify-center hidden" style="background:rgba(0,0,0,0.95);">
-  <div class="carousel-modal-inner relative rounded-lg max-w-2xl w-full max-h-[80vh] flex flex-col items-center p-0 shadow-xl bg-transparent"
-       style="top:50%;left:50%;transform:translate(-50%,-50%);position:fixed;">
+  <div class="carousel-modal-inner relative rounded-lg max-w-2xl w-full max-h-[80vh] flex flex-col items-center p-0 shadow-xl bg-transparent">
     <button class="absolute top-2 right-2 text-white text-2xl hover:text-red-400 focus:outline-none z-20" id="carouselCloseBtn" aria-label="Close">&times;</button>
     <div class="carousel w-full h-[60vh] flex items-center justify-center" style="position:relative;">
       <ul class="carousel__list">
-        <!-- Slides will be injected by JS -->
       </ul>
       <div id="carouselCaption" class="carousel__caption"></div>
     </div>
