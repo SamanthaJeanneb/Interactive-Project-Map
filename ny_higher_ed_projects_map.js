@@ -2,7 +2,8 @@ var map = L.map('mapid', {
   closePopupOnClick: false
 }).setView([42.9, -75.0], 7);
 
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+// Use Carto basemap without street names
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
   attribution: '&copy; <a href="https://carto.com/attributions">CARTO</a> &copy; OpenStreetMap contributors'
 }).addTo(map);
 
